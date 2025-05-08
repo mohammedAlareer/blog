@@ -1,11 +1,12 @@
 import Link from "next/link";
 import getFormattedDate from "../../../../lib/getFormattedDate";
-import { getPostData, getPostsByName } from "../../../../lib/posts"
+import getPostsMeta, { getPostData, getPostsByName } from "../../../../lib/posts"
 import { notFound } from "next/navigation";
 import 'highlight.js/styles/dark.css'
 
+export const revalidate = 10;
 export async function generateStaticParams() {
-  const posts = await getPostsByName();
+  const posts = await getPostsMeta();
 
   if (!posts) return []
 
@@ -40,7 +41,7 @@ export default async function Post({params:{postId}}) {
   ))
   return (
     <>
-    <div className="mx-auto max-w-2xl prose">
+    <div className="mx-auto max-w-2xl prose prose-invert">
       <h2 className="text-3xl mt-6 mb-0">{meta.title}</h2>
       <p className="text-sm mt-0">{meta.date}</p>
       <article className="mt-6">
